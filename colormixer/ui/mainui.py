@@ -1,19 +1,21 @@
 import os, logging
 
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget,
+    QMainWindow, QWidget,
     QVBoxLayout, QHBoxLayout, QPushButton, QListWidget,
     QFileDialog, QLineEdit
 )
-from PySide6.QtCore import Qt
 from utils import mainutils
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, manager=None):
+    def __init__(self, manager=None, directory=None, extensions=None):
         super().__init__()
         if not manager:
             logging.debug("No manager assigned to application")
+
+        self.directory = directory
+        self.extensions = extensions
 
         self.setWindowTitle("File lister")
 
@@ -26,6 +28,7 @@ class MainWindow(QMainWindow):
         self.search_bar.setPlaceholderText("Search...")
 
         self.list_widget = QListWidget()
+        self.list_widget.setSelectionMode(QListWidget.ExtendedSelection)
 
         self.btn_convert = QPushButton("Convert")
         self.btn_edit = QPushButton("Edit")
@@ -50,27 +53,33 @@ class MainWindow(QMainWindow):
         self.search_bar.textChanged.connect(self._filter_files)
 
 
-    def _select_directory(self,directory=None):
+    def _select_directory(self):
         """
 
         :param directory:
         :return:
         """
-        directory = QFileDialog.getExistingDirectory(
+        self.directory = QFileDialog.getExistingDirectory(
             self,
-            "Choisir un dossier",
-            "",
+            "Chose a folder",
+            self.directory,
             QFileDialog.ShowDirsOnly
         )
+        self.populate_list_widget(self.directory)
 
-        if directory:
-            self.list_widget.clear()
+    def populate_list_widget(self, directory):
+        # if self.directory:
+        self.list_widget.clear()
 
-            self._files = mainutils.listAllFiles(directory)
-            for f in self._files:
-                if os.path.isfile(f):
-                    filename = os.path.basename(f)
-                    self.list_widget.addItem(filename)
+        self._files = mainutils.listAllFiles(self.directory)
+        for f in self._files:
+            if os.path.isfile(f):
+                filename = os.path.basename(f)
+                if self.extensions:
+                    if os.path.splitext(filename)[1][1:] not in self.extensions:
+                        continue
+                self.list_widget.addItem(filename)
+
 
     def _load_files(self, folder):
         self._all_files = []
@@ -93,8 +102,6 @@ class MainWindow(QMainWindow):
         if not query:
             self._update_list(self._all_files)
             return
-        print(query)
-        print(f.lower())
         filtered = [f for f in self._all_files if query in f.lower()]
         self._update_list(filtered)
 

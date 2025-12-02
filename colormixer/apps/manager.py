@@ -3,6 +3,7 @@ Main application
 Controller for data and ui
 exec imports the ui and the data and manages the app
 """
+import logging
 import os.path
 import sys
 from PySide6.QtWidgets import QApplication
@@ -12,7 +13,8 @@ from utils.mainutils import exr_to_jpeg
 
 class Manager:
     def __init__(self):
-        pass
+        self.directory = "D:\work\cg\projects\lighting\maya_arnold"
+        self.extensions = ["exr"]
 
     def _setup_btn_connections(self):
         self.window.btn_convert.clicked.connect(self.action_convert)
@@ -20,12 +22,18 @@ class Manager:
 
     def action_convert(self):
         selected_items = self.window.list_widget.selectedItems()
-        for item in selected_items:
-            filename = item.text()
-            print(filename)
-            print(os.path.splitext(filename)[1])
+        for sel in selected_items:
+            filename = sel.text()
             if os.path.splitext(filename)[1] == ".exr":
-                exr_to_jpeg()
+                widget_selection = self.window.list_widget.selectedItems()
+                filepath = os.path.join(self.directory, filename)
+                if not os.path.exists(filepath):
+                    logging.error("File does not exist")
+                    continue
+                new_filename = filename.replace(".exr", ".jpeg")
+                new_filepath = os.path.join(self.directory, new_filename)
+                exr_to_jpeg(filepath, new_filepath)
+                logging.warning(f"Created {new_filename} at {new_filepath}")
             elif os.path.splitext(filename)[1] == ".jpeg":
                 print(f"{filename} skipped. already converted to jpeg")
             else:
@@ -43,8 +51,14 @@ class Manager:
         """
         # Launch app and display window
         app = QApplication(sys.argv)
-        self.window = mainui.MainWindow(self)
+        self.window = mainui.MainWindow(self, self.directory, self.extensions)
+        self.window.populate_list_widget(self.directory)
         self._setup_btn_connections()
         self.window.resize(500, 400)
         self.window.show()
+
+
         sys.exit(app.exec())
+
+
+

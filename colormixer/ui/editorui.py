@@ -1,7 +1,7 @@
 import OpenImageIO as oiio
-from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtCore import QByteArray
+
 import numpy as np
 
 class EditorBuffer(QWidget):
@@ -42,4 +42,4 @@ def qimage_to_numpy(image_path):
     arr = np.frombuffer(ptr, np.uint8).reshape((height, width, 4))
     return arr
 
-print (qimage_to_numpy("D:\work\cg\projects\lighting\maya_arnold\studio_small_08_4k.jpeg"))
+#print (qimage_to_numpy("D:\work\cg\projects\lighting\maya_arnold\studio_small_08_4k.jpeg"))

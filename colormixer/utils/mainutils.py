@@ -11,10 +11,12 @@ def listAllFiles(directory=None):
         return None
     file_paths = []
     for root, dirs, files in os.walk(directory):
-        for filename in files:
-            basename, ext = os.path.splitext(filename)
-            ext = ext[1:]
-            file_paths.append(os.path.join(root, filename))
+        depth = root[len(directory):].count(os.sep)
+        if depth < 2:
+            for filename in files:
+                basename, ext = os.path.splitext(filename)
+                ext = ext[1:]
+                file_paths.append(os.path.join(root, filename))
     return file_paths
 
 def exr_to_jpeg(input_path, output_path):
@@ -43,5 +45,4 @@ def exr_to_jpeg(input_path, output_path):
     img_8.write(output_path)
     return img_8
 
-exr_to_jpeg("D:\work\cg\projects\lighting\maya_arnold\studio_small_08_4k.exr", "D:\work\cg\projects\lighting\maya_arnold\studio_small_08_4k.jpeg")
 
