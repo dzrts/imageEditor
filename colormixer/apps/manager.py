@@ -13,7 +13,7 @@ from utils.mainutils import exr_to_jpeg
 
 class Manager:
     def __init__(self):
-        self.directory = "D:\work\cg\projects\lighting\maya_arnold"
+        self.directory = "U:\14_RENDU\s14\s14p0013\Valid_DA\v004\exr"
         self.extensions = ["exr"]
 
 

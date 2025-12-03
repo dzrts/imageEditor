@@ -26,9 +26,12 @@ def exr_to_jpeg(input_path, output_path):
     :param output_path: str
     :return: output_path: OpenImageIO.OpenImageIO.ImageBuf
     """
+    print("Process exr to jpeg")
     import OpenImageIO as oiio
     # Load Exr Image
+
     img = oiio.ImageBuf(input_path)
+
 
     # "Linear" -> "sRGB"
     img_srgb = oiio.ImageBufAlgo.colorconvert(
