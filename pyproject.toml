@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "imageEditor"
+version = "0.1.0"
+description = "imageEditor / EditorBuffer project using PySide6 and image processing."
+authors = ["dzrts17@gmail.com"]
+readme = "README.md"
+packages = [{ include = "myproject", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+PySide6 = "^6.6"
+numpy = "^1.26"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
