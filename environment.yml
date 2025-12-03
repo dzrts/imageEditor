@@ -9,3 +9,4 @@ dependencies:
       - PySide6
       - poetry
       - openimageio
+      - opencv-python

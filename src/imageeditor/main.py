@@ -1,3 +1,4 @@
+import OpenImageIO as oiio
 from PySide6.QtWidgets import QApplication
 from apps import manager
 from ui import mainui
