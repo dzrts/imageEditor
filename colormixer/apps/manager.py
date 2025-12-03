@@ -16,6 +16,7 @@ class Manager:
         self.directory = "D:\work\cg\projects\lighting\maya_arnold"
         self.extensions = ["exr"]
 
+
     def _setup_btn_connections(self):
         self.window.btn_convert.clicked.connect(self.action_convert)
         self.window.btn_edit.clicked.connect(self.action_edit)
@@ -24,7 +25,8 @@ class Manager:
         selected_items = self.window.list_widget.selectedItems()
         for sel in selected_items:
             filename = sel.text()
-            if os.path.splitext(filename)[1] == ".exr":
+            fileext = os.path.splitext(filename)[1][1:]
+            if fileext in self.extensions:
                 widget_selection = self.window.list_widget.selectedItems()
                 filepath = os.path.join(self.directory, filename)
                 if not os.path.exists(filepath):
@@ -34,16 +36,16 @@ class Manager:
                 new_filepath = os.path.join(self.directory, new_filename)
                 exr_to_jpeg(filepath, new_filepath)
                 logging.warning(f"Created {new_filename} at {new_filepath}")
-            elif os.path.splitext(filename)[1] == ".jpeg":
+            elif fileext == "jpeg":
                 print(f"{filename} skipped. already converted to jpeg")
             else:
                 print(f"{filename} ignored. Only Jpeg is allowed.")
 
 
     def action_edit(self):
-        editor = editorui.EditorBuffer()
+        editor = editorui.EditorBuffer(os.path.join(self.directory, self.window.list_widget.selectedItems()[0].text()))
+        self.window.editor_windows.append(editor)
         editor.show()
-        editor.add_layer()
 
     def exec(self):
         """
@@ -56,7 +58,6 @@ class Manager:
         self._setup_btn_connections()
         self.window.resize(500, 400)
         self.window.show()
-
 
         sys.exit(app.exec())
 

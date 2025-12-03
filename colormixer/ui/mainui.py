@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         self.directory = directory
         self.extensions = extensions
 
-        self.setWindowTitle("File lister")
+        self.setWindowTitle("Lister")
 
         self.current_folder = None
         self._all_files = []  # liste complète pour filtrage
@@ -38,11 +38,19 @@ class MainWindow(QMainWindow):
         action_btn_layout.addWidget(self.btn_edit)
 
         # Main layout
-        layout = QVBoxLayout()
-        layout.addWidget(self.btn_select_folder)
-        layout.addWidget(self.search_bar)
-        layout.addWidget(self.list_widget)
-        layout.addLayout(action_btn_layout)
+        layout = QHBoxLayout()
+
+        # Lister layout
+        lister_layout = QVBoxLayout()
+        lister_layout.addWidget(self.btn_select_folder)
+        lister_layout.addWidget(self.search_bar)
+        lister_layout.addWidget(self.list_widget)
+        lister_layout.addLayout(action_btn_layout)
+        layout.addLayout(lister_layout)
+
+        # Editor layout
+        self.editor_widget = QWidget()
+        layout.addWidget(self.editor_widget, 1)
 
         container = QWidget()
         container.setLayout(layout)
@@ -52,6 +60,7 @@ class MainWindow(QMainWindow):
         self.btn_select_folder.clicked.connect(self._select_directory)
         self.search_bar.textChanged.connect(self._filter_files)
 
+        self.editor_windows = []
 
     def _select_directory(self):
         """
@@ -64,7 +73,7 @@ class MainWindow(QMainWindow):
             "Chose a folder",
             self.directory,
             QFileDialog.ShowDirsOnly
-        )
+        ) or self.directory
         self.populate_list_widget(self.directory)
 
     def populate_list_widget(self, directory):
@@ -75,8 +84,10 @@ class MainWindow(QMainWindow):
         for f in self._files:
             if os.path.isfile(f):
                 filename = os.path.basename(f)
+                fileext = os.path.splitext(filename)[1][1:]
                 if self.extensions:
-                    if os.path.splitext(filename)[1][1:] not in self.extensions:
+
+                    if fileext not in self.extensions:
                         continue
                 self.list_widget.addItem(filename)
 

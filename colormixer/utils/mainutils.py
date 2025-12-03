@@ -12,7 +12,7 @@ def listAllFiles(directory=None):
     file_paths = []
     for root, dirs, files in os.walk(directory):
         depth = root[len(directory):].count(os.sep)
-        if depth < 2:
+        if depth < 1:
             for filename in files:
                 basename, ext = os.path.splitext(filename)
                 ext = ext[1:]
@@ -44,5 +44,3 @@ def exr_to_jpeg(input_path, output_path):
     # Save image to disk
     img_8.write(output_path)
     return img_8
-
-
