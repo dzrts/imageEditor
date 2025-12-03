@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environnement Micromamba / Conda
+.mamba_env/
+.conda/
+.env/
+venv/
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# IDE / éditeurs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs et temporaires
+*.log
+*.tmp
