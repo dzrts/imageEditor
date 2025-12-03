@@ -1,0 +1,4 @@
+pyside6-addons==6.10.1 ; python_version >= "3.9" and python_version < "3.12"
+pyside6-essentials==6.10.1 ; python_version >= "3.9" and python_version < "3.12"
+pyside6==6.10.1 ; python_version >= "3.9" and python_version < "3.12"
+shiboken6==6.10.1 ; python_version >= "3.9" and python_version < "3.12"

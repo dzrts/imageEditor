@@ -1,0 +1,11 @@
+name: imageeditor
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - oiio
+  - numpy
+  - pip
+  - pip:
+      - PySide6
+      - poetry
