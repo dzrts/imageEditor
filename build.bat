@@ -42,7 +42,7 @@ echo.
 
 REM ====== 3. Build executable using python -m PyInstaller ======
 echo Building executable...
-tools\micromamba.exe run -p .\.mamba_env python -m PyInstaller src\imageEditor\main.py --name imageEditor --clean --noconsole --onedir --additional-hooks-dir pyinstaller
+tools\micromamba.exe run -p .\.mamba_env python -m PyInstaller src\imageEditor\main.py --name imageEditor --clean --noconsole --onedir --additional-hooks-dir pyinstaller -y
 
 if %errorlevel% neq 0 (
     echo [ERROR] PyInstaller build failed.
