@@ -57,12 +57,11 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
         # Connections
-        self.btn_select_folder.clicked.connect(self._select_directory)
         self.search_bar.textChanged.connect(self._filter_files)
 
         self.editor_windows = []
 
-    def _select_directory(self):
+    def select_directory(self):
         """
 
         :param directory:
@@ -75,6 +74,7 @@ class MainWindow(QMainWindow):
             QFileDialog.ShowDirsOnly
         ) or self.directory
         self.populate_list_widget(self.directory)
+        return self.directory
 
     def populate_list_widget(self, directory):
         # if self.directory:

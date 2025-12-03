@@ -20,6 +20,10 @@ class Manager:
     def _setup_btn_connections(self):
         self.window.btn_convert.clicked.connect(self.action_convert)
         self.window.btn_edit.clicked.connect(self.action_edit)
+        self.window.btn_select_folder.clicked.connect(self.action_select_directory)
+
+    def action_select_directory(self):
+        self.directory = self.window.select_directory()
 
     def action_convert(self):
         selected_items = self.window.list_widget.selectedItems()
@@ -29,11 +33,14 @@ class Manager:
             if fileext in self.extensions:
                 widget_selection = self.window.list_widget.selectedItems()
                 filepath = os.path.join(self.directory, filename)
+                print(filepath)
                 if not os.path.exists(filepath):
                     logging.error("File does not exist")
                     continue
+
                 new_filename = filename.replace(".exr", ".jpeg")
                 new_filepath = os.path.join(self.directory, new_filename)
+                print(new_filepath)
                 exr_to_jpeg(filepath, new_filepath)
                 logging.warning(f"Created {new_filename} at {new_filepath}")
             elif fileext == "jpeg":
