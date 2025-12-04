@@ -25,7 +25,12 @@ class Manager(object):
         self.directory = self.view.select_directory()
 
     def _action_edit(self):
-        first_selected_filename = self.view.list_widget.selectedItems()[0].text()
+        selected_items = self.view.list_widget.selectedItems()
+        if len(selected_items) == 0:
+            logging.error("No item selected, cannot edit")
+            return None
+        first_selected_filename = selected_items[0].text()
+
         if len(self.view.editor_windows) == 1:
             logging.error("Edit already opened")
             return None
@@ -33,8 +38,18 @@ class Manager(object):
         self.view.editor_windows.append(editor)
         editor.show()
 
+    def _editorCloseEvent(self):
+        editor = self.view.editor_windows[0]
+        event = editor.event
+
+        def _closeEvent(editor, event):
+            print('toto')
+
     def action_convert(self):
         selected_items = self.view.list_widget.selectedItems()
+        if len(selected_items) == 0:
+            logging.error("No item selected, cannot convert")
+            return None
         for sel in selected_items:
             filename = sel.text()
             fileext = os.path.splitext(filename)[1][1:]
@@ -45,7 +60,6 @@ class Manager(object):
                 if not os.path.exists(filepath):
                     logging.error("File does not exist")
                     continue
-
                 new_filename = filename.replace(".exr", ".jpeg")
                 new_filepath = os.path.join(self.directory, new_filename)
                 print(new_filepath)
@@ -55,14 +69,6 @@ class Manager(object):
                 print(f"{filename} skipped. already converted to jpeg")
             else:
                 print(f"{filename} ignored. Only Jpeg is allowed.")
-
-    def _editorCloseEvent(self):
-        editor = self.view.editor_windows[0]
-        event = editor.event
-
-        def _closeEvent(editor, event):
-            print('toto')
-
 
     def setup_view(self):
         self.view.directory = self.directory
