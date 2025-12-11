@@ -16,6 +16,7 @@ def load_stylesheet(path: str | Path) -> str:
 
 def create_app() -> QApplication:
     app = QApplication([])
+    print("toto")
     settings = SettingsManager(); settings.load()
     project_manager = ProjectManager()
     error_handler = ErrorHandler()
